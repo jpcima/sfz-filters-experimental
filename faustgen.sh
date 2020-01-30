@@ -1,11 +1,13 @@
 #!/bin/sh
 set -e
 
+FAUSTARGS="-double"
+
 # support GNU sed only, use gsed on a Mac
 test -z "$SED" && SED=sed
 
 faustgen() {
-    faust -pn sfz"$1" -cn faust"$1" dsp/sfz_filters.dsp \
+    faust $FAUSTARGS -pn sfz"$1" -cn faust"$1" dsp/sfz_filters.dsp \
           | fgrep -v -- '->declare(' \
           | fgrep -v -- '->openHorizontalBox(' \
           | fgrep -v -- '->openVerticalBox(' \

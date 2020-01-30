@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------
 name: "sfz_filters"
 Code generated with Faust 2.20.2 (https://faust.grame.fr)
-Compilation options: -lang cpp -scal -ftz 0
+Compilation options: -lang cpp -double -ftz 0
 ------------------------------------------------------------ */
 
 #ifndef  __faustPink_H__
@@ -28,7 +28,7 @@ class faustPink : public dsp {
 	
  public:
 	
-	float fRec0[4];
+	double fRec0[4];
 	int fSampleRate;
 	
  public:
@@ -83,7 +83,7 @@ class faustPink : public dsp {
 	
 	 void instanceClear() {
 		for (int l0 = 0; (l0 < 4); l0 = (l0 + 1)) {
-			fRec0[l0] = 0.0f;
+			fRec0[l0] = 0.0;
 		}
 	}
 	
@@ -112,8 +112,8 @@ class faustPink : public dsp {
 		FAUSTFLOAT* input0 = inputs[0];
 		FAUSTFLOAT* output0 = outputs[0];
 		for (int i = 0; (i < count); i = (i + 1)) {
-			fRec0[0] = ((float(input0[i]) + ((2.49495602f * fRec0[1]) + (0.522189379f * fRec0[3]))) - (2.0172658f * fRec0[2]));
-			output0[i] = FAUSTFLOAT((((0.0499220341f * fRec0[0]) + (0.0506126992f * fRec0[2])) - ((0.0959935337f * fRec0[1]) + (0.00440878607f * fRec0[3]))));
+			fRec0[0] = ((double(input0[i]) + ((2.4949560019999999 * fRec0[1]) + (0.52218940000000003 * fRec0[3]))) - (2.0172658750000001 * fRec0[2]));
+			output0[i] = FAUSTFLOAT((((0.049922034999999997 * fRec0[0]) + (0.050612698999999997 * fRec0[2])) - ((0.095993537000000004 * fRec0[1]) + (0.0044087859999999996 * fRec0[3]))));
 			for (int j0 = 3; (j0 > 0); j0 = (j0 - 1)) {
 				fRec0[j0] = fRec0[(j0 - 1)];
 			}
