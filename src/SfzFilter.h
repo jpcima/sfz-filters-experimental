@@ -7,7 +7,9 @@
 #pragma once
 #include <memory>
 
-enum SfzFilterType : int;
+namespace sfz {
+
+enum FilterType : int;
 
 /**
    Multi-mode filter for SFZ v2
@@ -19,10 +21,10 @@ enum SfzFilterType : int;
      `pksh`: it's the opcode `filN_gain` (dB)
  */
 template <unsigned NCh>
-class SfzFilter {
+class Filter {
 public:
-    SfzFilter();
-    ~SfzFilter();
+    Filter();
+    ~Filter();
 
     /**
        Set up the filter constants.
@@ -56,41 +58,43 @@ public:
     /**
        Get the type of filter.
      */
-    SfzFilterType type() const;
+    FilterType type() const;
 
     /**
        Set the type of filter.
      */
-    void setType(SfzFilterType type);
+    void setType(FilterType type);
 
 private:
     struct Impl;
     std::unique_ptr<Impl> P;
 };
 
-enum SfzFilterType : int {
-    kSfzFilterNone,
-    kSfzFilterApf1p,
-    kSfzFilterBpf1p,
-    kSfzFilterBpf2p,
-    kSfzFilterBpf4p,
-    kSfzFilterBpf6p,
-    kSfzFilterBrf1p,
-    kSfzFilterBrf2p,
-    kSfzFilterHpf1p,
-    kSfzFilterHpf2p,
-    kSfzFilterHpf4p,
-    kSfzFilterHpf6p,
-    kSfzFilterLpf1p,
-    kSfzFilterLpf2p,
-    kSfzFilterLpf4p,
-    kSfzFilterLpf6p,
-    kSfzFilterPink,
-    kSfzFilterLpf2pSv,
-    kSfzFilterHpf2pSv,
-    kSfzFilterBpf2pSv,
-    kSfzFilterBrf2pSv,
-    kSfzFilterLsh,
-    kSfzFilterHsh,
-    kSfzFilterPeq,
+enum FilterType : int {
+    kFilterNone,
+    kFilterApf1p,
+    kFilterBpf1p,
+    kFilterBpf2p,
+    kFilterBpf4p,
+    kFilterBpf6p,
+    kFilterBrf1p,
+    kFilterBrf2p,
+    kFilterHpf1p,
+    kFilterHpf2p,
+    kFilterHpf4p,
+    kFilterHpf6p,
+    kFilterLpf1p,
+    kFilterLpf2p,
+    kFilterLpf4p,
+    kFilterLpf6p,
+    kFilterPink,
+    kFilterLpf2pSv,
+    kFilterHpf2pSv,
+    kFilterBpf2pSv,
+    kFilterBrf2pSv,
+    kFilterLsh,
+    kFilterHsh,
+    kFilterPeq,
 };
+
+} // namespace sfz

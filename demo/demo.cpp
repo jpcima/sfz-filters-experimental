@@ -32,7 +32,7 @@ private:
 private:
     jack_client_u fClient;
     jack_port_t *fPorts[4] = {};
-    SfzFilter<2> fFilter;
+    sfz::Filter<2> fFilter;
 
     QMainWindow *fWindow = nullptr;
     Ui::MainWindow fUi;
@@ -46,7 +46,7 @@ private:
     static constexpr int pkshMin = 0.0;
     static constexpr int pkshMax = 40.0;
 
-    int fType = kSfzFilterNone;
+    int fType = sfz::kFilterNone;
     int fCutoff = 500.0;
     int fReso = 0.0;
     int fPksh = 20.0;
@@ -98,30 +98,30 @@ void DemoApp::initWindow()
     fUi.setupUi(window);
 
     QComboBox *cbTypes = fUi.comboBox;
-    cbTypes->addItem("None", static_cast<int>(kSfzFilterNone));
-    cbTypes->addItem("Apf1p", static_cast<int>(kSfzFilterApf1p));
-    cbTypes->addItem("Bpf1p", static_cast<int>(kSfzFilterBpf1p));
-    cbTypes->addItem("Bpf2p", static_cast<int>(kSfzFilterBpf2p));
-    cbTypes->addItem("Bpf4p", static_cast<int>(kSfzFilterBpf4p));
-    cbTypes->addItem("Bpf6p", static_cast<int>(kSfzFilterBpf6p));
-    cbTypes->addItem("Brf1p", static_cast<int>(kSfzFilterBrf1p));
-    cbTypes->addItem("Brf2p", static_cast<int>(kSfzFilterBrf2p));
-    cbTypes->addItem("Hpf1p", static_cast<int>(kSfzFilterHpf1p));
-    cbTypes->addItem("Hpf2p", static_cast<int>(kSfzFilterHpf2p));
-    cbTypes->addItem("Hpf4p", static_cast<int>(kSfzFilterHpf4p));
-    cbTypes->addItem("Hpf6p", static_cast<int>(kSfzFilterHpf6p));
-    cbTypes->addItem("Lpf1p", static_cast<int>(kSfzFilterLpf1p));
-    cbTypes->addItem("Lpf2p", static_cast<int>(kSfzFilterLpf2p));
-    cbTypes->addItem("Lpf4p", static_cast<int>(kSfzFilterLpf4p));
-    cbTypes->addItem("Lpf6p", static_cast<int>(kSfzFilterLpf6p));
-    cbTypes->addItem("Pink", static_cast<int>(kSfzFilterPink));
-    cbTypes->addItem("Lpf2pSv", static_cast<int>(kSfzFilterLpf2pSv));
-    cbTypes->addItem("Hpf2pSv", static_cast<int>(kSfzFilterHpf2pSv));
-    cbTypes->addItem("Bpf2pSv", static_cast<int>(kSfzFilterBpf2pSv));
-    cbTypes->addItem("Brf2pSv", static_cast<int>(kSfzFilterBrf2pSv));
-    cbTypes->addItem("Lsh", static_cast<int>(kSfzFilterLsh));
-    cbTypes->addItem("Hsh", static_cast<int>(kSfzFilterHsh));
-    cbTypes->addItem("Peq", static_cast<int>(kSfzFilterPeq));
+    cbTypes->addItem("None", static_cast<int>(sfz::kFilterNone));
+    cbTypes->addItem("Apf1p", static_cast<int>(sfz::kFilterApf1p));
+    cbTypes->addItem("Bpf1p", static_cast<int>(sfz::kFilterBpf1p));
+    cbTypes->addItem("Bpf2p", static_cast<int>(sfz::kFilterBpf2p));
+    cbTypes->addItem("Bpf4p", static_cast<int>(sfz::kFilterBpf4p));
+    cbTypes->addItem("Bpf6p", static_cast<int>(sfz::kFilterBpf6p));
+    cbTypes->addItem("Brf1p", static_cast<int>(sfz::kFilterBrf1p));
+    cbTypes->addItem("Brf2p", static_cast<int>(sfz::kFilterBrf2p));
+    cbTypes->addItem("Hpf1p", static_cast<int>(sfz::kFilterHpf1p));
+    cbTypes->addItem("Hpf2p", static_cast<int>(sfz::kFilterHpf2p));
+    cbTypes->addItem("Hpf4p", static_cast<int>(sfz::kFilterHpf4p));
+    cbTypes->addItem("Hpf6p", static_cast<int>(sfz::kFilterHpf6p));
+    cbTypes->addItem("Lpf1p", static_cast<int>(sfz::kFilterLpf1p));
+    cbTypes->addItem("Lpf2p", static_cast<int>(sfz::kFilterLpf2p));
+    cbTypes->addItem("Lpf4p", static_cast<int>(sfz::kFilterLpf4p));
+    cbTypes->addItem("Lpf6p", static_cast<int>(sfz::kFilterLpf6p));
+    cbTypes->addItem("Pink", static_cast<int>(sfz::kFilterPink));
+    cbTypes->addItem("Lpf2pSv", static_cast<int>(sfz::kFilterLpf2pSv));
+    cbTypes->addItem("Hpf2pSv", static_cast<int>(sfz::kFilterHpf2pSv));
+    cbTypes->addItem("Bpf2pSv", static_cast<int>(sfz::kFilterBpf2pSv));
+    cbTypes->addItem("Brf2pSv", static_cast<int>(sfz::kFilterBrf2pSv));
+    cbTypes->addItem("Lsh", static_cast<int>(sfz::kFilterLsh));
+    cbTypes->addItem("Hsh", static_cast<int>(sfz::kFilterHsh));
+    cbTypes->addItem("Peq", static_cast<int>(sfz::kFilterPeq));
 
     cbTypes->setCurrentIndex(cbTypes->findData(fType));
 
@@ -177,7 +177,7 @@ int DemoApp::processAudio(jack_nframes_t nframes, void *cbdata)
     outs[0] = reinterpret_cast<float *>(jack_port_get_buffer(self->fPorts[2], nframes));
     outs[1] = reinterpret_cast<float *>(jack_port_get_buffer(self->fPorts[3], nframes));
 
-    self->fFilter.setType(static_cast<SfzFilterType>(self->fType));
+    self->fFilter.setType(static_cast<sfz::FilterType>(self->fType));
     self->fFilter.process(ins, outs, self->fCutoff, self->fReso, self->fPksh, nframes);
 
     return 0;

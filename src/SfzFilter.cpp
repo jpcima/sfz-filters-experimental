@@ -10,9 +10,11 @@
 #include <cstring>
 #include <cassert>
 
+namespace sfz {
+
 template <unsigned NCh>
-struct SfzFilter<NCh>::Impl {
-    SfzFilterType fType = kSfzFilterNone;
+struct Filter<NCh>::Impl {
+    FilterType fType = kFilterNone;
 
     sfzLpf1p<NCh> fDspLpf1p;
     sfzLpf2p<NCh> fDspLpf2p;
@@ -43,18 +45,18 @@ struct SfzFilter<NCh>::Impl {
 };
 
 template <unsigned NCh>
-SfzFilter<NCh>::SfzFilter()
+Filter<NCh>::Filter()
     : P{new Impl}
 {
 }
 
 template <unsigned NCh>
-SfzFilter<NCh>::~SfzFilter()
+Filter<NCh>::~Filter()
 {
 }
 
 template <unsigned NCh>
-void SfzFilter<NCh>::init(double sampleRate)
+void Filter<NCh>::init(double sampleRate)
 {
     P->fDspLpf1p.init(sampleRate);
     P->fDspLpf2p.init(sampleRate);
@@ -82,39 +84,39 @@ void SfzFilter<NCh>::init(double sampleRate)
 }
 
 template <unsigned NCh>
-void SfzFilter<NCh>::clear()
+void Filter<NCh>::clear()
 {
     switch (P->fType) {
-    case kSfzFilterNone: break;
-    case kSfzFilterApf1p: P->fDspApf1p.instanceClear(); break;
-    case kSfzFilterBpf1p: P->fDspBpf1p.instanceClear(); break;
-    case kSfzFilterBpf2p: P->fDspBpf2p.instanceClear(); break;
-    case kSfzFilterBpf4p: P->fDspBpf4p.instanceClear(); break;
-    case kSfzFilterBpf6p: P->fDspBpf6p.instanceClear(); break;
-    case kSfzFilterBrf1p: P->fDspBrf1p.instanceClear(); break;
-    case kSfzFilterBrf2p: P->fDspBrf2p.instanceClear(); break;
-    case kSfzFilterHpf1p: P->fDspHpf1p.instanceClear(); break;
-    case kSfzFilterHpf2p: P->fDspHpf2p.instanceClear(); break;
-    case kSfzFilterHpf4p: P->fDspHpf4p.instanceClear(); break;
-    case kSfzFilterHpf6p: P->fDspHpf6p.instanceClear(); break;
-    case kSfzFilterLpf1p: P->fDspLpf1p.instanceClear(); break;
-    case kSfzFilterLpf2p: P->fDspLpf2p.instanceClear(); break;
-    case kSfzFilterLpf4p: P->fDspLpf4p.instanceClear(); break;
-    case kSfzFilterLpf6p: P->fDspLpf6p.instanceClear(); break;
-    case kSfzFilterPink: P->fDspPink.instanceClear(); break;
-    case kSfzFilterLpf2pSv: P->fDspLpf2pSv.instanceClear(); break;
-    case kSfzFilterHpf2pSv: P->fDspHpf2pSv.instanceClear(); break;
-    case kSfzFilterBpf2pSv: P->fDspBpf2pSv.instanceClear(); break;
-    case kSfzFilterBrf2pSv: P->fDspBrf2pSv.instanceClear(); break;
-    case kSfzFilterLsh: P->fDspLsh.instanceClear(); break;
-    case kSfzFilterHsh: P->fDspHsh.instanceClear(); break;
-    case kSfzFilterPeq: P->fDspPeq.instanceClear(); break;
+    case kFilterNone: break;
+    case kFilterApf1p: P->fDspApf1p.instanceClear(); break;
+    case kFilterBpf1p: P->fDspBpf1p.instanceClear(); break;
+    case kFilterBpf2p: P->fDspBpf2p.instanceClear(); break;
+    case kFilterBpf4p: P->fDspBpf4p.instanceClear(); break;
+    case kFilterBpf6p: P->fDspBpf6p.instanceClear(); break;
+    case kFilterBrf1p: P->fDspBrf1p.instanceClear(); break;
+    case kFilterBrf2p: P->fDspBrf2p.instanceClear(); break;
+    case kFilterHpf1p: P->fDspHpf1p.instanceClear(); break;
+    case kFilterHpf2p: P->fDspHpf2p.instanceClear(); break;
+    case kFilterHpf4p: P->fDspHpf4p.instanceClear(); break;
+    case kFilterHpf6p: P->fDspHpf6p.instanceClear(); break;
+    case kFilterLpf1p: P->fDspLpf1p.instanceClear(); break;
+    case kFilterLpf2p: P->fDspLpf2p.instanceClear(); break;
+    case kFilterLpf4p: P->fDspLpf4p.instanceClear(); break;
+    case kFilterLpf6p: P->fDspLpf6p.instanceClear(); break;
+    case kFilterPink: P->fDspPink.instanceClear(); break;
+    case kFilterLpf2pSv: P->fDspLpf2pSv.instanceClear(); break;
+    case kFilterHpf2pSv: P->fDspHpf2pSv.instanceClear(); break;
+    case kFilterBpf2pSv: P->fDspBpf2pSv.instanceClear(); break;
+    case kFilterBrf2pSv: P->fDspBrf2pSv.instanceClear(); break;
+    case kFilterLsh: P->fDspLsh.instanceClear(); break;
+    case kFilterHsh: P->fDspHsh.instanceClear(); break;
+    case kFilterPeq: P->fDspPeq.instanceClear(); break;
     }
 }
 
 template <unsigned NCh>
 template <class F>
-void SfzFilter<NCh>::Impl::process(F &filter, const float *const in[NCh], float *const out[NCh], float cutoff, float q, float pksh, unsigned nframes)
+void Filter<NCh>::Impl::process(F &filter, const float *const in[NCh], float *const out[NCh], float cutoff, float q, float pksh, unsigned nframes)
 {
     filter.setCutoff(cutoff);
     filter.setQ(q);
@@ -123,9 +125,9 @@ void SfzFilter<NCh>::Impl::process(F &filter, const float *const in[NCh], float 
 }
 
 template <unsigned NCh>
-void SfzFilter<NCh>::process(const float *const in[NCh], float *const out[NCh], float cutoff, float q, float pksh, unsigned nframes)
+void Filter<NCh>::process(const float *const in[NCh], float *const out[NCh], float cutoff, float q, float pksh, unsigned nframes)
 {
-    if (P->fType == kSfzFilterNone) {
+    if (P->fType == kFilterNone) {
         for (unsigned c = 0; c < NCh; ++c) {
             const float *ch_in = in[c];
             float *ch_out = out[c];
@@ -136,44 +138,44 @@ void SfzFilter<NCh>::process(const float *const in[NCh], float *const out[NCh], 
     }
 
     switch (P->fType) {
-    case kSfzFilterApf1p: P->process(P->fDspApf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf1p: P->process(P->fDspBpf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf2p: P->process(P->fDspBpf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf4p: P->process(P->fDspBpf4p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf6p: P->process(P->fDspBpf6p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBrf1p: P->process(P->fDspBrf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBrf2p: P->process(P->fDspBrf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf1p: P->process(P->fDspHpf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf2p: P->process(P->fDspHpf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf4p: P->process(P->fDspHpf4p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf6p: P->process(P->fDspHpf6p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf1p: P->process(P->fDspLpf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf2p: P->process(P->fDspLpf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf4p: P->process(P->fDspLpf4p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf6p: P->process(P->fDspLpf6p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterPink: P->process(P->fDspPink, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf2pSv: P->process(P->fDspLpf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf2pSv: P->process(P->fDspHpf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf2pSv: P->process(P->fDspBpf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBrf2pSv: P->process(P->fDspBrf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLsh: P->process(P->fDspLsh, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHsh: P->process(P->fDspHsh, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterPeq: P->process(P->fDspPeq, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterApf1p: P->process(P->fDspApf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf1p: P->process(P->fDspBpf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf2p: P->process(P->fDspBpf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf4p: P->process(P->fDspBpf4p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf6p: P->process(P->fDspBpf6p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBrf1p: P->process(P->fDspBrf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBrf2p: P->process(P->fDspBrf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf1p: P->process(P->fDspHpf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf2p: P->process(P->fDspHpf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf4p: P->process(P->fDspHpf4p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf6p: P->process(P->fDspHpf6p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf1p: P->process(P->fDspLpf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf2p: P->process(P->fDspLpf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf4p: P->process(P->fDspLpf4p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf6p: P->process(P->fDspLpf6p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterPink: P->process(P->fDspPink, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf2pSv: P->process(P->fDspLpf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf2pSv: P->process(P->fDspHpf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf2pSv: P->process(P->fDspBpf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBrf2pSv: P->process(P->fDspBrf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLsh: P->process(P->fDspLsh, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHsh: P->process(P->fDspHsh, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterPeq: P->process(P->fDspPeq, in, out, cutoff, q, pksh, nframes); break;
     default: assert(false);
     }
 }
 
 template <unsigned NCh>
 template <class F>
-void SfzFilter<NCh>::Impl::processModulated(F &filter, const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, const float *pksh, unsigned nframes)
+void Filter<NCh>::Impl::processModulated(F &filter, const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, const float *pksh, unsigned nframes)
 {
     unsigned frame = 0;
 
     while (frame < nframes) {
         unsigned current = nframes - frame;
 
-        if (current > kSfzFilterControlInterval)
-            current = kSfzFilterControlInterval;
+        if (current > kFilterControlInterval)
+            current = kFilterControlInterval;
 
         const float *current_in[NCh];
         float *current_out[NCh];
@@ -193,9 +195,9 @@ void SfzFilter<NCh>::Impl::processModulated(F &filter, const float *const in[NCh
 }
 
 template <unsigned NCh>
-void SfzFilter<NCh>::processModulated(const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, const float *pksh, unsigned nframes)
+void Filter<NCh>::processModulated(const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, const float *pksh, unsigned nframes)
 {
-    if (P->fType == kSfzFilterNone) {
+    if (P->fType == kFilterNone) {
         for (unsigned c = 0; c < NCh; ++c) {
             const float *ch_in = in[c];
             float *ch_out = out[c];
@@ -206,41 +208,41 @@ void SfzFilter<NCh>::processModulated(const float *const in[NCh], float *const o
     }
 
     switch (P->fType) {
-    case kSfzFilterApf1p: P->processModulated(P->fDspApf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf1p: P->processModulated(P->fDspBpf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf2p: P->processModulated(P->fDspBpf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf4p: P->processModulated(P->fDspBpf4p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf6p: P->processModulated(P->fDspBpf6p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBrf1p: P->processModulated(P->fDspBrf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBrf2p: P->processModulated(P->fDspBrf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf1p: P->processModulated(P->fDspHpf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf2p: P->processModulated(P->fDspHpf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf4p: P->processModulated(P->fDspHpf4p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf6p: P->processModulated(P->fDspHpf6p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf1p: P->processModulated(P->fDspLpf1p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf2p: P->processModulated(P->fDspLpf2p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf4p: P->processModulated(P->fDspLpf4p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf6p: P->processModulated(P->fDspLpf6p, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterPink: P->processModulated(P->fDspPink, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLpf2pSv: P->processModulated(P->fDspLpf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHpf2pSv: P->processModulated(P->fDspHpf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBpf2pSv: P->processModulated(P->fDspBpf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterBrf2pSv: P->processModulated(P->fDspBrf2pSv, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterLsh: P->processModulated(P->fDspLsh, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterHsh: P->processModulated(P->fDspHsh, in, out, cutoff, q, pksh, nframes); break;
-    case kSfzFilterPeq: P->processModulated(P->fDspPeq, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterApf1p: P->processModulated(P->fDspApf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf1p: P->processModulated(P->fDspBpf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf2p: P->processModulated(P->fDspBpf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf4p: P->processModulated(P->fDspBpf4p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf6p: P->processModulated(P->fDspBpf6p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBrf1p: P->processModulated(P->fDspBrf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBrf2p: P->processModulated(P->fDspBrf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf1p: P->processModulated(P->fDspHpf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf2p: P->processModulated(P->fDspHpf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf4p: P->processModulated(P->fDspHpf4p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf6p: P->processModulated(P->fDspHpf6p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf1p: P->processModulated(P->fDspLpf1p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf2p: P->processModulated(P->fDspLpf2p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf4p: P->processModulated(P->fDspLpf4p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf6p: P->processModulated(P->fDspLpf6p, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterPink: P->processModulated(P->fDspPink, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLpf2pSv: P->processModulated(P->fDspLpf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHpf2pSv: P->processModulated(P->fDspHpf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBpf2pSv: P->processModulated(P->fDspBpf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterBrf2pSv: P->processModulated(P->fDspBrf2pSv, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterLsh: P->processModulated(P->fDspLsh, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterHsh: P->processModulated(P->fDspHsh, in, out, cutoff, q, pksh, nframes); break;
+    case kFilterPeq: P->processModulated(P->fDspPeq, in, out, cutoff, q, pksh, nframes); break;
     default: assert(false);
     }
 }
 
 template <unsigned NCh>
-SfzFilterType SfzFilter<NCh>::type() const
+FilterType Filter<NCh>::type() const
 {
     return P->fType;
 }
 
 template <unsigned NCh>
-void SfzFilter<NCh>::setType(SfzFilterType type)
+void Filter<NCh>::setType(FilterType type)
 {
     if (P->fType != type) {
         P->fType = type;
@@ -248,5 +250,7 @@ void SfzFilter<NCh>::setType(SfzFilterType type)
     }
 }
 
-template class SfzFilter<1>;
-template class SfzFilter<2>;
+template class Filter<1>;
+template class Filter<2>;
+
+} // namespace sfz
