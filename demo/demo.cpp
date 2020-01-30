@@ -30,10 +30,6 @@ private:
     void valueChangedPkShGain(int value);
 
 private:
-    jack_client_u fClient;
-    jack_port_t *fPorts[4] = {};
-    sfz::Filter<2> fFilter;
-
     QMainWindow *fWindow = nullptr;
     Ui::MainWindow fUi;
 
@@ -50,6 +46,11 @@ private:
     int fCutoff = 500.0;
     int fReso = 0.0;
     int fPksh = 20.0;
+
+    sfz::Filter<2> fFilter;
+
+    jack_client_u fClient;
+    jack_port_t *fPorts[4] = {};
 };
 
 DemoApp::DemoApp(int &argc, char **argv)
