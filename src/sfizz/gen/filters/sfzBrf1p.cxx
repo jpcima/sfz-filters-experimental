@@ -1,4 +1,6 @@
 /* ------------------------------------------------------------
+author: "Jean Pierre Cimalando"
+license: "BSD-2-Clause"
 name: "sfz_filters"
 Code generated with Faust 2.20.2 (https://faust.grame.fr)
 Compilation options: -lang cpp -inpl -double -ftz 0

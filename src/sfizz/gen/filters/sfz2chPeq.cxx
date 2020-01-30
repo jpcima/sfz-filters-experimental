@@ -1,4 +1,6 @@
 /* ------------------------------------------------------------
+author: "Jean Pierre Cimalando"
+license: "BSD-2-Clause"
 name: "sfz_filters"
 Code generated with Faust 2.20.2 (https://faust.grame.fr)
 Compilation options: -lang cpp -inpl -double -ftz 0
@@ -173,7 +175,7 @@ class faust2chPeq : public dsp {
 			output0[i] = FAUSTFLOAT((((fRec0[0] * fRec3[0]) + fTemp2) + (fRec4[0] * fRec0[2])));
 			double fTemp3 = (fRec1[0] * fRec5[1]);
 			fRec5[0] = (fTemp1 - (fTemp3 + (fRec2[0] * fRec5[2])));
-			output1[i] = FAUSTFLOAT(((fTemp3 + (fRec3[0] * fRec5[0])) + (fRec4[0] * fRec5[2])));
+			output1[i] = FAUSTFLOAT(((fRec3[0] * fRec5[0]) + (fTemp3 + (fRec4[0] * fRec5[2]))));
 			fRec1[1] = fRec1[0];
 			fRec2[1] = fRec2[0];
 			fRec0[2] = fRec0[1];
