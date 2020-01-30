@@ -3,8 +3,8 @@ project(SfzFilters)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_library(SfzFilters STATIC src/SfzFilter.cpp)
-target_include_directories(SfzFilters PUBLIC src)
+add_library(SfzFilters STATIC src/sfizz/SfzFilter.cpp)
+target_include_directories(SfzFilters PUBLIC src/sfizz)
 
 ###
 

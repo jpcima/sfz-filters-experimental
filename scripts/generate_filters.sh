@@ -12,9 +12,10 @@ FAUSTARGS="-double -inpl"
 test -z "$SED" && SED=sed
 
 faustgen() {
-    local outfile=src/gen/sfz"$1".cxx
+    mkdir -p src/sfizz/gen/filters
+    local outfile=src/sfizz/gen/filters/sfz"$1".cxx
 
-    local code=`faust $FAUSTARGS -pn sfz"$1" -cn faust"$1" dsp/sfz_filters.dsp`
+    local code=`faust $FAUSTARGS -pn sfz"$1" -cn faust"$1" src/sfizz/dsp/filters/sfz_filters.dsp`
 
     # find variable names of our controls
     local cutoffVar=`echo "$code" | $SED -r 's%.*\("Cutoff", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
