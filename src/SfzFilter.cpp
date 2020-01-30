@@ -136,7 +136,7 @@ void SfzFilter<NCh>::Impl::processModulated(F &filter, const float *const in[NCh
     unsigned frame = 0;
 
     while (frame < nframes) {
-        size_t current = nframes - frame;
+        unsigned current = nframes - frame;
 
         if (current > kSfzFilterControlInterval)
             current = kSfzFilterControlInterval;
@@ -151,7 +151,7 @@ void SfzFilter<NCh>::Impl::processModulated(F &filter, const float *const in[NCh
 
         filter.setCutoff(cutoff[frame]);
         filter.setQ(q[frame]);
-        filter.compute(nframes, const_cast<float **>(current_in), const_cast<float **>(current_out));
+        filter.compute(current, const_cast<float **>(current_in), const_cast<float **>(current_out));
 
         frame += current;
     }
