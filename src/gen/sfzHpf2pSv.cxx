@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------
 name: "sfz_filters"
 Code generated with Faust 2.20.2 (https://faust.grame.fr)
-Compilation options: -lang cpp -double -ftz 0
+Compilation options: -lang cpp -inpl -double -ftz 0
 ------------------------------------------------------------ */
 
 #ifndef  __faustHpf2pSv_H__
@@ -137,17 +137,18 @@ class faustHpf2pSv : public dsp {
 		double fSlow0 = (0.0010000000000000009 * std::tan((fConst0 * double(fCutoff))));
 		double fSlow1 = (1.0 / std::pow(10.0, (0.050000000000000003 * double(fQ))));
 		for (int i = 0; (i < count); i = (i + 1)) {
+			double fTemp0 = double(input0[i]);
 			fRec4[0] = (fSlow0 + (0.999 * fRec4[1]));
-			double fTemp0 = (fSlow1 + fRec4[0]);
-			fRec3[0] = ((0.999 * fRec3[1]) + (0.0010000000000000009 / ((fRec4[0] * fTemp0) + 1.0)));
-			fRec5[0] = ((0.999 * fRec5[1]) + (0.0010000000000000009 * fTemp0));
-			double fTemp1 = (double(input0[i]) - (fRec1[1] + (fRec5[0] * fRec2[1])));
-			double fRec0 = (fRec3[0] * fTemp1);
-			double fTemp2 = ((fRec4[0] * fRec3[0]) * fTemp1);
-			double fTemp3 = (fRec2[1] + fTemp2);
-			fRec1[0] = (fRec1[1] + (2.0 * (fRec4[0] * fTemp3)));
-			double fTemp4 = (fRec2[1] + (2.0 * fTemp2));
-			fRec2[0] = fTemp4;
+			double fTemp1 = (fSlow1 + fRec4[0]);
+			fRec3[0] = ((0.999 * fRec3[1]) + (0.0010000000000000009 / ((fRec4[0] * fTemp1) + 1.0)));
+			fRec5[0] = ((0.999 * fRec5[1]) + (0.0010000000000000009 * fTemp1));
+			double fTemp2 = (fTemp0 - (fRec1[1] + (fRec5[0] * fRec2[1])));
+			double fRec0 = (fRec3[0] * fTemp2);
+			double fTemp3 = ((fRec4[0] * fRec3[0]) * fTemp2);
+			double fTemp4 = (fRec2[1] + fTemp3);
+			fRec1[0] = (fRec1[1] + (2.0 * (fRec4[0] * fTemp4)));
+			double fTemp5 = (fRec2[1] + (2.0 * fTemp3));
+			fRec2[0] = fTemp5;
 			output0[i] = FAUSTFLOAT(fRec0);
 			fRec4[1] = fRec4[0];
 			fRec3[1] = fRec3[0];

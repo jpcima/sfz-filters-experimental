@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------
 name: "sfz_filters"
 Code generated with Faust 2.20.2 (https://faust.grame.fr)
-Compilation options: -lang cpp -double -ftz 0
+Compilation options: -lang cpp -inpl -double -ftz 0
 ------------------------------------------------------------ */
 
 #ifndef  __faust2chBpf2p_H__
@@ -163,14 +163,16 @@ class faust2chBpf2p : public dsp {
 		double fSlow8 = (0.00050000000000000044 * fSlow7);
 		double fSlow9 = (0.0010000000000000009 * (0.0 - (0.5 * fSlow7)));
 		for (int i = 0; (i < count); i = (i + 1)) {
+			double fTemp0 = double(input0[i]);
+			double fTemp1 = double(input1[i]);
 			fRec1[0] = (fSlow5 + (0.999 * fRec1[1]));
 			fRec2[0] = (fSlow6 + (0.999 * fRec2[1]));
-			fRec0[0] = (double(input0[i]) - ((fRec1[0] * fRec0[1]) + (fRec2[0] * fRec0[2])));
+			fRec0[0] = (fTemp0 - ((fRec1[0] * fRec0[1]) + (fRec2[0] * fRec0[2])));
 			fRec3[0] = (fSlow8 + (0.999 * fRec3[1]));
 			fRec4[0] = (0.999 * fRec4[1]);
 			fRec5[0] = (fSlow9 + (0.999 * fRec5[1]));
 			output0[i] = FAUSTFLOAT((((fRec0[0] * fRec3[0]) + (fRec4[0] * fRec0[1])) + (fRec5[0] * fRec0[2])));
-			fRec6[0] = (double(input1[i]) - ((fRec1[0] * fRec6[1]) + (fRec2[0] * fRec6[2])));
+			fRec6[0] = (fTemp1 - ((fRec1[0] * fRec6[1]) + (fRec2[0] * fRec6[2])));
 			output1[i] = FAUSTFLOAT((((fRec3[0] * fRec6[0]) + (fRec4[0] * fRec6[1])) + (fRec5[0] * fRec6[2])));
 			fRec1[1] = fRec1[0];
 			fRec2[1] = fRec2[0];

@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------
 name: "sfz_filters"
 Code generated with Faust 2.20.2 (https://faust.grame.fr)
-Compilation options: -lang cpp -double -ftz 0
+Compilation options: -lang cpp -inpl -double -ftz 0
 ------------------------------------------------------------ */
 
 #ifndef  __faust2chBpf2pSv_H__
@@ -161,27 +161,29 @@ class faust2chBpf2pSv : public dsp {
 		double fSlow2 = (1.0 / fSlow1);
 		double fSlow3 = (0.0010000000000000009 / fSlow1);
 		for (int i = 0; (i < count); i = (i + 1)) {
+			double fTemp0 = double(input0[i]);
+			double fTemp1 = double(input1[i]);
 			fRec3[0] = (fSlow0 + (0.999 * fRec3[1]));
-			double fTemp0 = (fSlow2 + fRec3[0]);
-			fRec4[0] = ((0.999 * fRec4[1]) + (0.0010000000000000009 / ((fRec3[0] * fTemp0) + 1.0)));
-			double fTemp1 = (fRec3[0] * fRec4[0]);
-			fRec5[0] = ((0.999 * fRec5[1]) + (0.0010000000000000009 * fTemp0));
-			double fTemp2 = (double(input0[i]) - (fRec1[1] + (fRec5[0] * fRec2[1])));
-			double fTemp3 = (fTemp1 * fTemp2);
-			double fTemp4 = (fRec2[1] + fTemp3);
-			double fRec0 = fTemp4;
-			fRec1[0] = (fRec1[1] + (2.0 * (fRec3[0] * fTemp4)));
-			double fTemp5 = (fRec2[1] + (2.0 * fTemp3));
-			fRec2[0] = fTemp5;
+			double fTemp2 = (fSlow2 + fRec3[0]);
+			fRec4[0] = ((0.999 * fRec4[1]) + (0.0010000000000000009 / ((fRec3[0] * fTemp2) + 1.0)));
+			double fTemp3 = (fRec3[0] * fRec4[0]);
+			fRec5[0] = ((0.999 * fRec5[1]) + (0.0010000000000000009 * fTemp2));
+			double fTemp4 = (fTemp0 - (fRec1[1] + (fRec5[0] * fRec2[1])));
+			double fTemp5 = (fTemp3 * fTemp4);
+			double fTemp6 = (fRec2[1] + fTemp5);
+			double fRec0 = fTemp6;
+			fRec1[0] = (fRec1[1] + (2.0 * (fRec3[0] * fTemp6)));
+			double fTemp7 = (fRec2[1] + (2.0 * fTemp5));
+			fRec2[0] = fTemp7;
 			fRec6[0] = (fSlow3 + (0.999 * fRec6[1]));
 			output0[i] = FAUSTFLOAT((fRec0 * fRec6[0]));
-			double fTemp6 = (double(input1[i]) - (fRec8[1] + (fRec5[0] * fRec9[1])));
-			double fTemp7 = (fTemp1 * fTemp6);
-			double fTemp8 = (fRec9[1] + fTemp7);
-			double fRec7 = fTemp8;
-			fRec8[0] = (fRec8[1] + (2.0 * (fRec3[0] * fTemp8)));
-			double fTemp9 = (fRec9[1] + (2.0 * fTemp7));
-			fRec9[0] = fTemp9;
+			double fTemp8 = (fTemp1 - (fRec8[1] + (fRec5[0] * fRec9[1])));
+			double fTemp9 = (fTemp3 * fTemp8);
+			double fTemp10 = (fRec9[1] + fTemp9);
+			double fRec7 = fTemp10;
+			fRec8[0] = (fRec8[1] + (2.0 * (fRec3[0] * fTemp10)));
+			double fTemp11 = (fRec9[1] + (2.0 * fTemp9));
+			fRec9[0] = fTemp11;
 			output1[i] = FAUSTFLOAT((fRec6[0] * fRec7));
 			fRec3[1] = fRec3[0];
 			fRec4[1] = fRec4[0];

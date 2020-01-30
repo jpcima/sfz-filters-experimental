@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------
 name: "sfz_filters"
 Code generated with Faust 2.20.2 (https://faust.grame.fr)
-Compilation options: -lang cpp -double -ftz 0
+Compilation options: -lang cpp -inpl -double -ftz 0
 ------------------------------------------------------------ */
 
 #ifndef  __faustApf1p_H__
@@ -122,8 +122,9 @@ class faustApf1p : public dsp {
 		FAUSTFLOAT* output0 = outputs[0];
 		double fSlow0 = (0.0010000000000000009 * ((fConst0 * double(fCutoff)) + -1.0));
 		for (int i = 0; (i < count); i = (i + 1)) {
+			double fTemp0 = double(input0[i]);
 			fRec1[0] = (fSlow0 + (0.999 * fRec1[1]));
-			fRec0[0] = (double(input0[i]) - (fRec1[0] * fRec0[1]));
+			fRec0[0] = (fTemp0 - (fRec1[0] * fRec0[1]));
 			output0[i] = FAUSTFLOAT((fRec0[1] + (fRec1[0] * fRec0[0])));
 			fRec1[1] = fRec1[0];
 			fRec0[1] = fRec0[0];

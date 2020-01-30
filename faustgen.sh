@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-FAUSTARGS="-double"
+FAUSTARGS="-double -inpl"
 
 # support GNU sed only, use gsed on a Mac
 test -z "$SED" && SED=sed
