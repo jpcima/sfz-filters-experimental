@@ -7,12 +7,14 @@ FAUSTARGS="-double -inpl"
 test -z "$SED" && SED=sed
 
 faustgen() {
-    code=`faust $FAUSTARGS -pn sfz"$1" -cn faust"$1" dsp/sfz_filters.dsp`
+    local outfile=src/gen/sfz"$1".cxx
+
+    local code=`faust $FAUSTARGS -pn sfz"$1" -cn faust"$1" dsp/sfz_filters.dsp`
 
     # find variable names of our controls
-    cutoffVar=`echo "$code" | $SED -r 's%.*\("Cutoff", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
-    resoVar=`echo "$code" | $SED -r 's%.*\("Resonance", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
-    pkshVar=`echo "$code" | $SED -r 's%.*\("Peak/shelf gain", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
+    local cutoffVar=`echo "$code" | $SED -r 's%.*\("Cutoff", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
+    local resoVar=`echo "$code" | $SED -r 's%.*\("Resonance", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
+    local pkshVar=`echo "$code" | $SED -r 's%.*\("Peak/shelf gain", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
 
     # suppress some faust-specific stuff we don't care
     echo "$code" \
@@ -22,22 +24,22 @@ faustgen() {
           | fgrep -v -- '->closeBox(' \
           | fgrep -v -- '->addHorizontalSlider(' \
           | fgrep -v -- '->addVerticalSlider(' \
-          > src/gen/sfz"$1".cxx
+          > "$outfile"
 
     # direct access to parameter variables
-    $SED -r -i 's/\bprivate:/public:/' src/gen/sfz"$1".cxx
+    $SED -r -i 's/\bprivate:/public:/' "$outfile"
     # no virtuals please
-    $SED -r -i 's/\bvirtual\b//' src/gen/sfz"$1".cxx
+    $SED -r -i 's/\bvirtual\b//' "$outfile"
 
     # rename the variables for us to access more easily
     if test ! -z "$cutoffVar"; then
-        $SED -r -i 's/\b'"$cutoffVar"'\b/fCutoff/' src/gen/sfz"$1".cxx
+        $SED -r -i 's/\b'"$cutoffVar"'\b/fCutoff/' "$outfile"
     fi
     if test ! -z "$resoVar"; then
-        $SED -r -i 's/\b'"$resoVar"'\b/fQ/' src/gen/sfz"$1".cxx
+        $SED -r -i 's/\b'"$resoVar"'\b/fQ/' "$outfile"
     fi
     if test ! -z "$pkshVar"; then
-        $SED -r -i 's/\b'"$pkshVar"'\b/fPkShGain/' src/gen/sfz"$1".cxx
+        $SED -r -i 's/\b'"$pkshVar"'\b/fPkShGain/' "$outfile"
     fi
 }
 
