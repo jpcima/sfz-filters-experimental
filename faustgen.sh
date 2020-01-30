@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+if ! test -d "src"; then
+    echo "Please run this in the project root directory."
+    exit 1
+fi
+
 FAUSTARGS="-double -inpl"
 
 # support GNU sed only, use gsed on a Mac
