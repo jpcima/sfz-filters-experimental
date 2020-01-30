@@ -7,7 +7,15 @@ FAUSTARGS="-double -inpl"
 test -z "$SED" && SED=sed
 
 faustgen() {
-    faust $FAUSTARGS -pn sfz"$1" -cn faust"$1" dsp/sfz_filters.dsp \
+    code=`faust $FAUSTARGS -pn sfz"$1" -cn faust"$1" dsp/sfz_filters.dsp`
+
+    # find variable names of our controls
+    cutoffVar=`echo "$code" | $SED -r 's%.*\("Cutoff", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
+    resoVar=`echo "$code" | $SED -r 's%.*\("Resonance", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
+    pkshVar=`echo "$code" | $SED -r 's%.*\("Peak/shelf gain", &[ \t]*([a-zA-Z0-9_]+).*%\1%;t;d'`
+
+    # suppress some faust-specific stuff we don't care
+    echo "$code" \
           | fgrep -v -- '->declare(' \
           | fgrep -v -- '->openHorizontalBox(' \
           | fgrep -v -- '->openVerticalBox(' \
@@ -15,14 +23,22 @@ faustgen() {
           | fgrep -v -- '->addHorizontalSlider(' \
           | fgrep -v -- '->addVerticalSlider(' \
           > src/gen/sfz"$1".cxx
+
     # direct access to parameter variables
     $SED -r -i 's/\bprivate:/public:/' src/gen/sfz"$1".cxx
     # no virtuals please
     $SED -r -i 's/\bvirtual\b//' src/gen/sfz"$1".cxx
-    # in faust code, our only Hslider is cutoff, and Vslider is resonance
-    # complete garbage, fine enough for our purpose
-    $SED -r -i 's/\bfHslider0\b/fCutoff/' src/gen/sfz"$1".cxx
-    $SED -r -i 's/\bfVslider0\b/fQ/' src/gen/sfz"$1".cxx
+
+    # rename the variables for us to access more easily
+    if test ! -z "$cutoffVar"; then
+        $SED -r -i 's/\b'"$cutoffVar"'\b/fCutoff/' src/gen/sfz"$1".cxx
+    fi
+    if test ! -z "$resoVar"; then
+        $SED -r -i 's/\b'"$resoVar"'\b/fQ/' src/gen/sfz"$1".cxx
+    fi
+    if test ! -z "$pkshVar"; then
+        $SED -r -i 's/\b'"$pkshVar"'\b/fPkShGain/' src/gen/sfz"$1".cxx
+    fi
 }
 
 for f in \
