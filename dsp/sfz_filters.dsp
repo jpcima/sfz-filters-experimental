@@ -70,7 +70,8 @@ sfzLpf2pSv = sk.sallenKey2ndOrderLPF(smoothCoefs,cutoff,Q);
 sfzHpf2pSv = sk.sallenKey2ndOrderHPF(smoothCoefs,cutoff,Q);
 
 // the SFZ 2-pole state-variable bandpass filter
-sfzBpf2pSv = sk.sallenKey2ndOrderBPF(smoothCoefs,cutoff,Q);
+//   Note: attenuate in order to have the resonant peak at 0 dB (same as sfzBpf2p)
+sfzBpf2pSv = sk.sallenKey2ndOrderBPF(smoothCoefs,cutoff,Q) : *((1./Q):smoothCoefs);
 
 // the SFZ 2-pole state-variable notch filter
 sfzBrf2pSv = _ <: (sfzLpf2pSv, sfzHpf2pSv) :> +;

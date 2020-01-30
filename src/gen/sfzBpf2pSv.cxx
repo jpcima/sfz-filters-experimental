@@ -38,6 +38,7 @@ class faustBpf2pSv : public dsp {
 	double fRec5[2];
 	double fRec1[2];
 	double fRec2[2];
+	double fRec6[2];
 	
  public:
 	
@@ -108,6 +109,9 @@ class faustBpf2pSv : public dsp {
 		for (int l4 = 0; (l4 < 2); l4 = (l4 + 1)) {
 			fRec2[l4] = 0.0;
 		}
+		for (int l5 = 0; (l5 < 2); l5 = (l5 + 1)) {
+			fRec6[l5] = 0.0;
+		}
 	}
 	
 	 void init(int sample_rate) {
@@ -135,10 +139,12 @@ class faustBpf2pSv : public dsp {
 		FAUSTFLOAT* input0 = inputs[0];
 		FAUSTFLOAT* output0 = outputs[0];
 		double fSlow0 = (0.0010000000000000009 * std::tan((fConst0 * double(fCutoff))));
-		double fSlow1 = (1.0 / std::pow(10.0, (0.050000000000000003 * double(fQ))));
+		double fSlow1 = std::pow(10.0, (0.050000000000000003 * double(fQ)));
+		double fSlow2 = (1.0 / fSlow1);
+		double fSlow3 = (0.0010000000000000009 / fSlow1);
 		for (int i = 0; (i < count); i = (i + 1)) {
 			fRec3[0] = (fSlow0 + (0.999 * fRec3[1]));
-			double fTemp0 = (fSlow1 + fRec3[0]);
+			double fTemp0 = (fSlow2 + fRec3[0]);
 			fRec4[0] = ((0.999 * fRec4[1]) + (0.0010000000000000009 / ((fRec3[0] * fTemp0) + 1.0)));
 			fRec5[0] = ((0.999 * fRec5[1]) + (0.0010000000000000009 * fTemp0));
 			double fTemp1 = (double(input0[i]) - (fRec1[1] + (fRec5[0] * fRec2[1])));
@@ -148,12 +154,14 @@ class faustBpf2pSv : public dsp {
 			fRec1[0] = (fRec1[1] + (2.0 * (fRec3[0] * fTemp3)));
 			double fTemp4 = (fRec2[1] + (2.0 * fTemp2));
 			fRec2[0] = fTemp4;
-			output0[i] = FAUSTFLOAT(fRec0);
+			fRec6[0] = (fSlow3 + (0.999 * fRec6[1]));
+			output0[i] = FAUSTFLOAT((fRec0 * fRec6[0]));
 			fRec3[1] = fRec3[0];
 			fRec4[1] = fRec4[0];
 			fRec5[1] = fRec5[0];
 			fRec1[1] = fRec1[0];
 			fRec2[1] = fRec2[0];
+			fRec6[1] = fRec6[0];
 		}
 	}
 
