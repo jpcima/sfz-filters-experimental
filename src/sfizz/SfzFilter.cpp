@@ -132,7 +132,7 @@ void Filter<NCh>::process(const float *const in[NCh], float *const out[NCh], flo
             const float *ch_in = in[c];
             float *ch_out = out[c];
             if (ch_in != ch_out)
-                std::memcpy(ch_out, ch_in, NCh * nframes * sizeof(float));
+                std::memcpy(ch_out, ch_in, nframes * sizeof(float));
         }
         return;
     }
@@ -202,7 +202,7 @@ void Filter<NCh>::processModulated(const float *const in[NCh], float *const out[
             const float *ch_in = in[c];
             float *ch_out = out[c];
             if (ch_in != ch_out)
-                std::memcpy(ch_out, ch_in, NCh * nframes * sizeof(float));
+                std::memcpy(ch_out, ch_in, nframes * sizeof(float));
         }
         return;
     }
