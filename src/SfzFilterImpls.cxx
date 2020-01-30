@@ -24,6 +24,10 @@ struct UI {};
 #include "gen/sfzLpf4p.cxx"
 #include "gen/sfzLpf6p.cxx"
 #include "gen/sfzPink.cxx"
+#include "gen/sfzLpf2pSv.cxx"
+#include "gen/sfzHpf2pSv.cxx"
+#include "gen/sfzBpf2pSv.cxx"
+#include "gen/sfzBrf2pSv.cxx"
 
 #include "gen/sfz2chApf1p.cxx"
 #include "gen/sfz2chBpf1p.cxx"
@@ -41,6 +45,10 @@ struct UI {};
 #include "gen/sfz2chLpf4p.cxx"
 #include "gen/sfz2chLpf6p.cxx"
 #include "gen/sfz2chPink.cxx"
+#include "gen/sfz2chLpf2pSv.cxx"
+#include "gen/sfz2chHpf2pSv.cxx"
+#include "gen/sfz2chBpf2pSv.cxx"
+#include "gen/sfz2chBrf2pSv.cxx"
 
 template <class F> struct sfzFilter : public F {
     void setCutoff(float v) { F::fCutoff = v; }
@@ -73,6 +81,10 @@ template <unsigned NCh> struct sfzApf1p;
 template <unsigned NCh> struct sfzBrf1p;
 template <unsigned NCh> struct sfzBrf2p;
 template <unsigned NCh> struct sfzPink;
+template <unsigned NCh> struct sfzLpf2pSv;
+template <unsigned NCh> struct sfzHpf2pSv;
+template <unsigned NCh> struct sfzBpf2pSv;
+template <unsigned NCh> struct sfzBrf2pSv;
 
 template<> struct sfzLpf1p<1> : public sfzFilterNoQ<faustLpf1p> {};
 template<> struct sfzLpf2p<1> : public sfzFilter<faustLpf2p> {};
@@ -90,6 +102,10 @@ template<> struct sfzApf1p<1> : public sfzFilterNoQ<faustApf1p> {};
 template<> struct sfzBrf1p<1> : public sfzFilterNoQ<faustBrf1p> {};
 template<> struct sfzBrf2p<1> : public sfzFilter<faustBrf2p> {};
 template<> struct sfzPink<1> : public sfzFilterNoCutoff<faustPink> {};
+template<> struct sfzLpf2pSv<1> : public sfzFilter<faustLpf2pSv> {};
+template<> struct sfzHpf2pSv<1> : public sfzFilter<faustHpf2pSv> {};
+template<> struct sfzBpf2pSv<1> : public sfzFilter<faustBpf2pSv> {};
+template<> struct sfzBrf2pSv<1> : public sfzFilter<faustBrf2pSv> {};
 
 template<> struct sfzLpf1p<2> : public sfzFilterNoQ<faust2chLpf1p> {};
 template<> struct sfzLpf2p<2> : public sfzFilter<faust2chLpf2p> {};
@@ -107,3 +123,7 @@ template<> struct sfzApf1p<2> : public sfzFilterNoQ<faust2chApf1p> {};
 template<> struct sfzBrf1p<2> : public sfzFilterNoQ<faust2chBrf1p> {};
 template<> struct sfzBrf2p<2> : public sfzFilter<faust2chBrf2p> {};
 template<> struct sfzPink<2> : public sfzFilterNoCutoff<faust2chPink> {};
+template<> struct sfzLpf2pSv<2> : public sfzFilter<faust2chLpf2pSv> {};
+template<> struct sfzHpf2pSv<2> : public sfzFilter<faust2chHpf2pSv> {};
+template<> struct sfzBpf2pSv<2> : public sfzFilter<faust2chBpf2pSv> {};
+template<> struct sfzBrf2pSv<2> : public sfzFilter<faust2chBrf2pSv> {};

@@ -1,5 +1,6 @@
 import("stdfaust.lib");
 fm = library("filters_modulable.dsp");
+sk = library("sallenkey_modulable.dsp");
 
 //==============================================================================
 // Generators
@@ -62,6 +63,18 @@ sfzBrf2p = fm.rbjNotchSmooth(smoothCoefs,cutoff,0.,Q);
 // the SFZ pink filter
 sfzPink = no.pink_filter;
 
+// the SFZ 2-pole state-variable lowpass filter
+sfzLpf2pSv = sk.sallenKey2ndOrderLPF(smoothCoefs,cutoff,Q);
+
+// the SFZ 2-pole state-variable highpass filter
+sfzHpf2pSv = sk.sallenKey2ndOrderHPF(smoothCoefs,cutoff,Q);
+
+// the SFZ 2-pole state-variable bandpass filter
+sfzBpf2pSv = sk.sallenKey2ndOrderBPF(smoothCoefs,cutoff,Q);
+
+// the SFZ 2-pole state-variable notch filter
+sfzBrf2pSv = _ <: (sfzLpf2pSv, sfzHpf2pSv) :> +;
+
 //==============================================================================
 // Filters (stereo)
 
@@ -81,6 +94,10 @@ sfz2chApf1p = par(i,2,sfzApf1p);
 sfz2chBrf1p = par(i,2,sfzBrf1p);
 sfz2chBrf2p = par(i,2,sfzBrf2p);
 sfz2chPink = par(i,2,sfzPink);
+sfz2chLpf2pSv = par(i,2,sfzLpf2pSv);
+sfz2chHpf2pSv = par(i,2,sfzHpf2pSv);
+sfz2chBpf2pSv = par(i,2,sfzBpf2pSv);
+sfz2chBrf2pSv = par(i,2,sfzBrf2pSv);
 
 //==============================================================================
 // Filter parameters

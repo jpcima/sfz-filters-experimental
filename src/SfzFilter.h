@@ -79,4 +79,8 @@ enum SfzFilterType : int {
     kSfzFilterLpf4p,
     kSfzFilterLpf6p,
     kSfzFilterPink,
+    kSfzFilterLpf2pSv,
+    kSfzFilterHpf2pSv,
+    kSfzFilterBpf2pSv,
+    kSfzFilterBrf2pSv,
 };

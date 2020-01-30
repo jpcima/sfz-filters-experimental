@@ -110,6 +110,10 @@ void DemoApp::initWindow()
     cbTypes->addItem("Lpf4p", static_cast<int>(kSfzFilterLpf4p));
     cbTypes->addItem("Lpf6p", static_cast<int>(kSfzFilterLpf6p));
     cbTypes->addItem("Pink", static_cast<int>(kSfzFilterPink));
+    cbTypes->addItem("Lpf2pSv", static_cast<int>(kSfzFilterLpf2pSv));
+    cbTypes->addItem("Hpf2pSv", static_cast<int>(kSfzFilterHpf2pSv));
+    cbTypes->addItem("Bpf2pSv", static_cast<int>(kSfzFilterBpf2pSv));
+    cbTypes->addItem("Brf2pSv", static_cast<int>(kSfzFilterBrf2pSv));
 
     cbTypes->setCurrentIndex(cbTypes->findData(fType));
 
