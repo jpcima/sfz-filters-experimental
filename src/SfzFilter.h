@@ -3,6 +3,7 @@
 
 enum SfzFilterType : int;
 
+template <unsigned NCh>
 class SfzFilter {
 public:
     SfzFilter();
@@ -11,8 +12,8 @@ public:
     void init(double sampleRate);
     void clear();
 
-    void process(const float *in, float *out, float cutoff, float q, unsigned nframes);
-    void processModulated(const float *in, float *out, const float *cutoff, const float *q, unsigned nframes);
+    void process(const float *const in[NCh], float *const out[NCh], float cutoff, float q, unsigned nframes);
+    void processModulated(const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, unsigned nframes);
 
     SfzFilterType type() const;
     void setType(SfzFilterType type);

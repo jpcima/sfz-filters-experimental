@@ -4,41 +4,45 @@
 #include <cstring>
 #include <cassert>
 
-struct SfzFilter::Impl {
+template <unsigned NCh>
+struct SfzFilter<NCh>::Impl {
     SfzFilterType fType = kSfzFilterNone;
 
-    sfzLpf1p fDspLpf1p;
-    sfzLpf2p fDspLpf2p;
-    sfzLpf4p fDspLpf4p;
-    sfzLpf6p fDspLpf6p;
-    sfzHpf1p fDspHpf1p;
-    sfzHpf2p fDspHpf2p;
-    sfzHpf4p fDspHpf4p;
-    sfzHpf6p fDspHpf6p;
-    sfzBpf1p fDspBpf1p;
-    sfzBpf2p fDspBpf2p;
-    sfzBpf4p fDspBpf4p;
-    sfzBpf6p fDspBpf6p;
-    sfzApf1p fDspApf1p;
-    sfzBrf1p fDspBrf1p;
-    sfzBrf2p fDspBrf2p;
-    sfzPink fDspPink;
+    sfzLpf1p<NCh> fDspLpf1p;
+    sfzLpf2p<NCh> fDspLpf2p;
+    sfzLpf4p<NCh> fDspLpf4p;
+    sfzLpf6p<NCh> fDspLpf6p;
+    sfzHpf1p<NCh> fDspHpf1p;
+    sfzHpf2p<NCh> fDspHpf2p;
+    sfzHpf4p<NCh> fDspHpf4p;
+    sfzHpf6p<NCh> fDspHpf6p;
+    sfzBpf1p<NCh> fDspBpf1p;
+    sfzBpf2p<NCh> fDspBpf2p;
+    sfzBpf4p<NCh> fDspBpf4p;
+    sfzBpf6p<NCh> fDspBpf6p;
+    sfzApf1p<NCh> fDspApf1p;
+    sfzBrf1p<NCh> fDspBrf1p;
+    sfzBrf2p<NCh> fDspBrf2p;
+    sfzPink<NCh> fDspPink;
 
-    template <class F> static void process(F &filter, const float *in, float *out, float cutoff, float q, unsigned nframes);
-    template <class F> static void processModulated(F &filter, const float *in, float *out, const float *cutoff, const float *q, unsigned nframes);
+    template <class F> static void process(F &filter, const float *const in[NCh], float *const out[NCh], float cutoff, float q, unsigned nframes);
+    template <class F> static void processModulated(F &filter, const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, unsigned nframes);
     void updateParameters();
 };
 
-SfzFilter::SfzFilter()
+template <unsigned NCh>
+SfzFilter<NCh>::SfzFilter()
     : P{new Impl}
 {
 }
 
-SfzFilter::~SfzFilter()
+template <unsigned NCh>
+SfzFilter<NCh>::~SfzFilter()
 {
 }
 
-void SfzFilter::init(double sampleRate)
+template <unsigned NCh>
+void SfzFilter<NCh>::init(double sampleRate)
 {
     P->fDspLpf1p.init(sampleRate);
     P->fDspLpf2p.init(sampleRate);
@@ -58,7 +62,8 @@ void SfzFilter::init(double sampleRate)
     P->fDspPink.init(sampleRate);
 }
 
-void SfzFilter::clear()
+template <unsigned NCh>
+void SfzFilter<NCh>::clear()
 {
     switch (P->fType) {
     case kSfzFilterNone: break;
@@ -81,19 +86,25 @@ void SfzFilter::clear()
     }
 }
 
+template <unsigned NCh>
 template <class F>
-void SfzFilter::Impl::process(F &filter, const float *in, float *out, float cutoff, float q, unsigned nframes)
+void SfzFilter<NCh>::Impl::process(F &filter, const float *const in[NCh], float *const out[NCh], float cutoff, float q, unsigned nframes)
 {
     filter.setCutoff(cutoff);
     filter.setQ(q);
-    filter.compute(nframes, const_cast<float **>(&in), &out);
+    filter.compute(nframes, const_cast<float **>(in), const_cast<float **>(out));
 }
 
-void SfzFilter::process(const float *in, float *out, float cutoff, float q, unsigned nframes)
+template <unsigned NCh>
+void SfzFilter<NCh>::process(const float *const in[NCh], float *const out[NCh], float cutoff, float q, unsigned nframes)
 {
     if (P->fType == kSfzFilterNone) {
-        if (in != out)
-            std::memcpy(out, in, nframes * sizeof(float));
+        for (unsigned c = 0; c < NCh; ++c) {
+            const float *ch_in = in[c];
+            float *ch_out = out[c];
+            if (ch_in != ch_out)
+                std::memcpy(ch_out, ch_in, NCh * nframes * sizeof(float));
+        }
         return;
     }
 
@@ -118,8 +129,9 @@ void SfzFilter::process(const float *in, float *out, float cutoff, float q, unsi
     }
 }
 
+template <unsigned NCh>
 template <class F>
-void SfzFilter::Impl::processModulated(F &filter, const float *in, float *out, const float *cutoff, const float *q, unsigned nframes)
+void SfzFilter<NCh>::Impl::processModulated(F &filter, const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, unsigned nframes)
 {
     unsigned frame = 0;
 
@@ -129,22 +141,32 @@ void SfzFilter::Impl::processModulated(F &filter, const float *in, float *out, c
         if (current > kSfzFilterControlInterval)
             current = kSfzFilterControlInterval;
 
-        const float *current_in = in + frame;
-        float *current_out = out + frame;
+        const float *current_in[NCh];
+        float *current_out[NCh];
+
+        for (unsigned c = 0; c < NCh; ++c) {
+            current_in[c] = in[c] + frame;
+            current_out[c] = out[c] + frame;
+        }
 
         filter.setCutoff(cutoff[frame]);
         filter.setQ(q[frame]);
-        filter.compute(nframes, const_cast<float **>(&current_in), &current_out);
+        filter.compute(nframes, const_cast<float **>(current_in), const_cast<float **>(current_out));
 
         frame += current;
     }
 }
 
-void SfzFilter::processModulated(const float *in, float *out, const float *cutoff, const float *q, unsigned nframes)
+template <unsigned NCh>
+void SfzFilter<NCh>::processModulated(const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, unsigned nframes)
 {
     if (P->fType == kSfzFilterNone) {
-        if (in != out)
-            std::memcpy(out, in, nframes * sizeof(float));
+        for (unsigned c = 0; c < NCh; ++c) {
+            const float *ch_in = in[c];
+            float *ch_out = out[c];
+            if (ch_in != ch_out)
+                std::memcpy(ch_out, ch_in, NCh * nframes * sizeof(float));
+        }
         return;
     }
 
@@ -169,15 +191,20 @@ void SfzFilter::processModulated(const float *in, float *out, const float *cutof
     }
 }
 
-SfzFilterType SfzFilter::type() const
+template <unsigned NCh>
+SfzFilterType SfzFilter<NCh>::type() const
 {
     return P->fType;
 }
 
-void SfzFilter::setType(SfzFilterType type)
+template <unsigned NCh>
+void SfzFilter<NCh>::setType(SfzFilterType type)
 {
     if (P->fType != type) {
         P->fType = type;
         clear();
     }
 }
+
+template class SfzFilter<1>;
+template class SfzFilter<2>;

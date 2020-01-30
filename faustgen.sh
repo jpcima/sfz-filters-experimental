@@ -23,19 +23,14 @@ faustgen() {
     $SED -r -i 's/\bfVslider0\b/fQ/' src/gen/sfz"$1".cxx
 }
 
-faustgen Lpf1p
-faustgen Lpf2p
-faustgen Lpf4p
-faustgen Lpf6p
-faustgen Hpf1p
-faustgen Hpf2p
-faustgen Hpf4p
-faustgen Hpf6p
-faustgen Bpf1p
-faustgen Bpf2p
-faustgen Bpf4p
-faustgen Bpf6p
-faustgen Apf1p
-faustgen Brf1p
-faustgen Brf2p
-faustgen Pink
+for f in \
+    Lpf1p Lpf2p Lpf4p Lpf6p \
+    Hpf1p Hpf2p Hpf4p Hpf6p \
+    Bpf1p Bpf2p Bpf4p Bpf6p \
+    Apf1p \
+    Brf1p Brf2p \
+    Pink
+do
+    faustgen "$f"
+    faustgen "2ch$f"
+done

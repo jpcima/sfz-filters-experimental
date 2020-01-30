@@ -1,8 +1,14 @@
 import("stdfaust.lib");
 fm = library("filters_modulable.dsp");
 
+//==============================================================================
+// Generators
+
 // the SFZ *noise generator
 sfzNoise = no.noise : *(gate) : *(0.25);
+
+//==============================================================================
+// Filters
 
 // the SFZ lowpass 1-pole filter
 sfzLpf1p = fm.lp1Smooth(smoothCoefs,cutoff);
@@ -55,6 +61,26 @@ sfzBrf2p = fm.rbjNotchSmooth(smoothCoefs,cutoff,0.,Q);
 
 // the SFZ pink filter
 sfzPink = no.pink_filter;
+
+//==============================================================================
+// Filters (stereo)
+
+sfz2chLpf1p = par(i,2,sfzLpf1p);
+sfz2chLpf2p = par(i,2,sfzLpf2p);
+sfz2chLpf4p = par(i,2,sfzLpf4p);
+sfz2chLpf6p = par(i,2,sfzLpf6p);
+sfz2chHpf1p = par(i,2,sfzHpf1p);
+sfz2chHpf2p = par(i,2,sfzHpf2p);
+sfz2chHpf4p = par(i,2,sfzHpf4p);
+sfz2chHpf6p = par(i,2,sfzHpf6p);
+sfz2chBpf1p = par(i,2,sfzBpf1p);
+sfz2chBpf2p = par(i,2,sfzBpf2p);
+sfz2chBpf4p = par(i,2,sfzBpf4p);
+sfz2chBpf6p = par(i,2,sfzBpf6p);
+sfz2chApf1p = par(i,2,sfzApf1p);
+sfz2chBrf1p = par(i,2,sfzBrf1p);
+sfz2chBrf2p = par(i,2,sfzBrf2p);
+sfz2chPink = par(i,2,sfzPink);
 
 //==============================================================================
 // Filter parameters
