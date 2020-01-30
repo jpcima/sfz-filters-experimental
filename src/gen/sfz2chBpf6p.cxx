@@ -193,7 +193,7 @@ class faust2chBpf6p : public dsp {
 			fRec10[0] = (fTemp1 - ((fRec4[0] * fRec10[1]) + (fRec5[0] * fRec10[2])));
 			fRec9[0] = ((((fRec0[0] * fRec10[0]) + (fRec6[0] * fRec10[1])) + (fRec7[0] * fRec10[2])) - ((fRec4[0] * fRec9[1]) + (fRec5[0] * fRec9[2])));
 			fRec8[0] = ((((fRec0[0] * fRec9[0]) + (fRec6[0] * fRec9[1])) + (fRec7[0] * fRec9[2])) - ((fRec4[0] * fRec8[1]) + (fRec5[0] * fRec8[2])));
-			output1[i] = FAUSTFLOAT(((fRec6[0] * fRec8[1]) + ((fRec0[0] * fRec8[0]) + (fRec7[0] * fRec8[2]))));
+			output1[i] = FAUSTFLOAT((((fRec0[0] * fRec8[0]) + (fRec6[0] * fRec8[1])) + (fRec7[0] * fRec8[2])));
 			fRec0[1] = fRec0[0];
 			fRec4[1] = fRec4[0];
 			fRec5[1] = fRec5[0];

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>309</width>
+    <width>415</width>
     <height>169</height>
    </rect>
   </property>
@@ -20,6 +20,42 @@
     </item>
     <item row="0" column="1">
      <widget class="QDial" name="dialResonance"/>
+    </item>
+    <item row="0" column="3">
+     <widget class="QDial" name="dialPkShGain"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QSpinBox" name="spinCutoff">
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="suffix">
+       <string> Hz</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QSpinBox" name="spinResonance">
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="suffix">
+       <string> dB</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QComboBox" name="comboBox"/>
+    </item>
+    <item row="1" column="3">
+     <widget class="QSpinBox" name="spinPkShGain">
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="suffix">
+       <string> dB</string>
+      </property>
+     </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label">
@@ -51,28 +87,15 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QSpinBox" name="spinCutoff">
+    <item row="2" column="3">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Peak/shelf gain</string>
+      </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
-      <property name="suffix">
-       <string> Hz</string>
-      </property>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QSpinBox" name="spinResonance">
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="suffix">
-       <string> dB</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QComboBox" name="comboBox"/>
     </item>
    </layout>
   </widget>
