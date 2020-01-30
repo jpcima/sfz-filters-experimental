@@ -1,5 +1,8 @@
 // -*- mode: faust; -*-
 
+declare author "Jean Pierre Cimalando";
+declare license "BSD-2-Clause";
+
 import("stdfaust.lib");
 rbj = library("rbj_filters.dsp");
 

@@ -1,3 +1,8 @@
+// -*- mode: faust; -*-
+
+declare author "Jean Pierre Cimalando";
+declare license "BSD-2-Clause";
+
 import("stdfaust.lib");
 fm = library("filters_modulable.dsp");
 sk = library("sallenkey_modulable.dsp");
