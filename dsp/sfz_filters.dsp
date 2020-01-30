@@ -121,35 +121,3 @@ pkShGain = vslider("[03] Peak/shelf gain [unit:dB]", 0.0, 0.0, 40.0, 0.1);
 
 // smoothing function to prevent fast changes of filter coefficients
 smoothCoefs = si.smoo; // TODO check if this is appropriate otherwise replace
-
-//==============================================================================
-// Example
-
-gate = checkbox("[03] White noise");
-
-switchedLp1p = _ <: (_, sfzLpf1p) : select2(checkbox("[04] Enable Lp 1p"));
-switchedLp2p = _ <: (_, sfzLpf2p) : select2(checkbox("[05] Enable Lp 2p"));
-switchedLp4p = _ <: (_, sfzLpf4p) : select2(checkbox("[06] Enable Lp 4p"));
-switchedLp6p = _ <: (_, sfzLpf6p) : select2(checkbox("[07] Enable Lp 6p"));
-switchedHp1p = _ <: (_, sfzHpf1p) : select2(checkbox("[04] Enable Hp 1p"));
-switchedHp2p = _ <: (_, sfzHpf2p) : select2(checkbox("[08] Enable Hp 2p"));
-switchedHp4p = _ <: (_, sfzHpf4p) : select2(checkbox("[09] Enable Hp 4p"));
-switchedHp6p = _ <: (_, sfzHpf6p) : select2(checkbox("[10] Enable Hp 6p"));
-switchedBp1p = _ <: (_, sfzBpf1p) : select2(checkbox("[11] Enable Bp 1p"));
-switchedBp2p = _ <: (_, sfzBpf2p) : select2(checkbox("[12] Enable Bp 2p"));
-switchedBp4p = _ <: (_, sfzBpf4p) : select2(checkbox("[13] Enable Bp 4p"));
-switchedBp6p = _ <: (_, sfzBpf6p) : select2(checkbox("[14] Enable Bp 6p"));
-switchedAp1p = _ <: (_, sfzApf1p) : select2(checkbox("[15] Enable Ap 1p"));
-switchedBr1p = _ <: (_, sfzBrf1p) : select2(checkbox("[16] Enable Br 1p"));
-switchedBr2p = _ <: (_, sfzBrf2p) : select2(checkbox("[17] Enable Br 2p"));
-switchedPink = _ <: (_, sfzPink) : select2(checkbox("[18] Enable Pink"));
-
-process = sfzNoise : filterChain <: (_, _) with {
-  filterChain =
-    switchedLp1p : switchedLp2p : switchedLp4p : switchedLp6p :
-    switchedHp1p : switchedHp2p : switchedHp4p : switchedHp6p :
-    switchedBp1p : switchedBp2p : switchedBp4p : switchedBp6p :
-    switchedAp1p :
-    switchedBr1p : switchedBr2p :
-    switchedPink;
-};
