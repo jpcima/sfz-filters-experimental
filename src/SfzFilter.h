@@ -12,6 +12,11 @@ enum SfzFilterType : int;
 /**
    Multi-mode filter for SFZ v2
    Available for mono and stereo. (NCh=1, NCh=2)
+
+   Parameters:
+     `cutoff`: it's the opcode `filN_cutoff` (Hz)
+     `q`: it's the opcode `filN_resonance` (dB)
+     `pksh`: it's the opcode `filN_gain` (dB)
  */
 template <unsigned NCh>
 class SfzFilter {
