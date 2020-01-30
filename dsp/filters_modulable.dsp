@@ -1,7 +1,7 @@
 // -*- mode: faust; -*-
 
 import("stdfaust.lib");
-mm = library("maxmsp.lib");
+rbj = library("rbj_filters.dsp");
 
 //-------------------------------------------------------------------------
 // Biquad filter from normalized coefficients
@@ -23,15 +23,15 @@ smoothBiquad(s,b0,b1,b2,a1,a2) = biquad(b0:s,b1:s,b2:s,a1:s,a2:s);
 //     g : gain in decibel, for peaking and shelving types only
 //     q : height of the resonant peak in linear units
 //-------------------------------------------------------------------------
-rbjLpfSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).LPF,x) : smoothBiquad(s);
-rbjHpfSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).HPF,x) : smoothBiquad(s);
-rbjBpfSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).BPF,x) : smoothBiquad(s);
-rbjNotchSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).notch,x) : smoothBiquad(s);
-rbjApfSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).APF,x) : smoothBiquad(s);
-rbjPeakingEqSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).peakingEQ,x) : smoothBiquad(s);
-rbjPeakingNotchSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).peakNotch,x) : smoothBiquad(s);
-rbjLowShelfSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).lowShelf,x) : smoothBiquad(s);
-rbjHighShelfSmooth(s,f,g,q,x) = (mm.filtercoeff(f,g,q).highShelf,x) : smoothBiquad(s);
+rbjLpfSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).LPF,x) : smoothBiquad(s);
+rbjHpfSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).HPF,x) : smoothBiquad(s);
+rbjBpfSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).BPF,x) : smoothBiquad(s);
+rbjNotchSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).notch,x) : smoothBiquad(s);
+rbjApfSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).APF,x) : smoothBiquad(s);
+rbjPeakingEqSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).peakingEQ,x) : smoothBiquad(s);
+rbjPeakingNotchSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).peakNotch,x) : smoothBiquad(s);
+rbjLowShelfSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).lowShelf,x) : smoothBiquad(s);
+rbjHighShelfSmooth(s,f,g,q,x) = (rbj.filtercoeff(f,g,q).highShelf,x) : smoothBiquad(s);
 
 //-------------------------------------------------------------------------
 // 1-pole low-pass filter

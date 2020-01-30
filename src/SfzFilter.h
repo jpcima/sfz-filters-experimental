@@ -34,17 +34,19 @@ public:
        Process one cycle of the filter without modulating cutoff or Q.
        `cutoff` is a frequency expressed in Hz.
        `q` is a resonance expressed in dB.
+       `pksh` is a peak/shelf gain expressed in dB.
        `in[i]` and `out[i]` may refer to identical buffers, for in-place processing
      */
-    void process(const float *const in[NCh], float *const out[NCh], float cutoff, float q, unsigned nframes);
+    void process(const float *const in[NCh], float *const out[NCh], float cutoff, float q, float pksh, unsigned nframes);
 
     /**
        Process one cycle of the filter with cutoff and Q values varying over time.
        `cutoff` is a frequency expressed in Hz.
        `q` is a resonance expressed in dB.
+       `pksh` is a peak/shelf gain expressed in dB.
        `in[i]` and `out[i]` may refer to identical buffers, for in-place processing
      */
-    void processModulated(const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, unsigned nframes);
+    void processModulated(const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, const float *pksh, unsigned nframes);
 
     /**
        Get the type of filter.
@@ -83,4 +85,6 @@ enum SfzFilterType : int {
     kSfzFilterHpf2pSv,
     kSfzFilterBpf2pSv,
     kSfzFilterBrf2pSv,
+    kSfzFilterLsh,
+    kSfzFilterHsh,
 };

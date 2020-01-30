@@ -76,6 +76,12 @@ sfzBpf2pSv = sk.sallenKey2ndOrderBPF(smoothCoefs,cutoff,Q) : *((1./Q):smoothCoef
 // the SFZ 2-pole state-variable notch filter
 sfzBrf2pSv = _ <: (sfzLpf2pSv, sfzHpf2pSv) :> +;
 
+// the SFZ low-shelf filter
+sfzLsh = fm.rbjLowShelfSmooth(smoothCoefs,cutoff,pkShGain,Q);
+
+// the SFZ high-shelf filter
+sfzHsh = fm.rbjHighShelfSmooth(smoothCoefs,cutoff,pkShGain,Q);
+
 //==============================================================================
 // Filters (stereo)
 
@@ -99,12 +105,15 @@ sfz2chLpf2pSv = par(i,2,sfzLpf2pSv);
 sfz2chHpf2pSv = par(i,2,sfzHpf2pSv);
 sfz2chBpf2pSv = par(i,2,sfzBpf2pSv);
 sfz2chBrf2pSv = par(i,2,sfzBrf2pSv);
+sfz2chLsh = par(i,2,sfzLsh);
+sfz2chHsh = par(i,2,sfzHsh);
 
 //==============================================================================
 // Filter parameters
 
 cutoff = hslider("[01] Cutoff [unit:Hz] [scale:log]", 440.0, 50.0, 10000.0, 1.0);
 Q = vslider("[02] Resonance [unit:dB]", 0.0, 0.0, 40.0, 0.1) : ba.db2linear;
+pkShGain = vslider("[03] Peak/shelf gain [unit:dB]", 0.0, 0.0, 40.0, 0.1);
 
 // smoothing function to prevent fast changes of filter coefficients
 smoothCoefs = si.smoo; // TODO check if this is appropriate otherwise replace

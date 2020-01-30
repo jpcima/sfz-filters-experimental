@@ -47,6 +47,7 @@ for f in \
     Bpf1p Bpf2p Bpf4p Bpf6p \
     Apf1p \
     Brf1p Brf2p \
+    Lsh Hsh \
     Pink \
     Lpf2pSv Hpf2pSv Bpf2pSv Brf2pSv
 do

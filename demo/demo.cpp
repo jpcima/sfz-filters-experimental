@@ -27,6 +27,7 @@ private:
     void valueChangedType(int value);
     void valueChangedCutoff(int value);
     void valueChangedResonance(int value);
+    void valueChangedPkShGain(int value);
 
 private:
     jack_client_u fClient;
@@ -42,9 +43,13 @@ private:
     static constexpr int resoMin = 0.0;
     static constexpr int resoMax = 20.0;
 
+    static constexpr int pkshMin = 0.0;
+    static constexpr int pkshMax = 40.0;
+
     int fType = kSfzFilterNone;
-    int fCutoff = cutoffMin;
-    int fReso = resoMin;
+    int fCutoff = 500.0;
+    int fReso = 0.0;
+    int fPksh = 20.0;
 };
 
 DemoApp::DemoApp(int &argc, char **argv)
@@ -114,6 +119,8 @@ void DemoApp::initWindow()
     cbTypes->addItem("Hpf2pSv", static_cast<int>(kSfzFilterHpf2pSv));
     cbTypes->addItem("Bpf2pSv", static_cast<int>(kSfzFilterBpf2pSv));
     cbTypes->addItem("Brf2pSv", static_cast<int>(kSfzFilterBrf2pSv));
+    cbTypes->addItem("Lsh", static_cast<int>(kSfzFilterLsh));
+    cbTypes->addItem("Hsh", static_cast<int>(kSfzFilterHsh));
 
     cbTypes->setCurrentIndex(cbTypes->findData(fType));
 
@@ -123,13 +130,17 @@ void DemoApp::initWindow()
 
     fUi.dialCutoff->setRange(cutoffMin, cutoffMax);
     fUi.dialResonance->setRange(resoMin, resoMax);
+    fUi.dialPkShGain->setRange(pkshMin, pkshMax);
     fUi.spinCutoff->setRange(cutoffMin, cutoffMax);
     fUi.spinResonance->setRange(resoMin, resoMax);
+    fUi.spinPkShGain->setRange(pkshMin, pkshMax);
 
     fUi.dialCutoff->setValue(fCutoff);
     fUi.dialResonance->setValue(fReso);
+    fUi.dialPkShGain->setValue(fPksh);
     fUi.spinCutoff->setValue(fCutoff);
     fUi.spinResonance->setValue(fReso);
+    fUi.spinPkShGain->setValue(fPksh);
 
     connect(
         fUi.dialCutoff, &QDial::valueChanged,
@@ -143,6 +154,12 @@ void DemoApp::initWindow()
     connect(
         fUi.spinResonance, QOverload<int>::of(&QSpinBox::valueChanged),
         this, [this](int value) { valueChangedResonance(value); });
+    connect(
+        fUi.dialPkShGain, &QDial::valueChanged,
+        this, [this](int value) { valueChangedPkShGain(value); });
+    connect(
+        fUi.spinPkShGain, QOverload<int>::of(&QSpinBox::valueChanged),
+        this, [this](int value) { valueChangedPkShGain(value); });
 
     window->show();
 }
@@ -160,7 +177,7 @@ int DemoApp::processAudio(jack_nframes_t nframes, void *cbdata)
     outs[1] = reinterpret_cast<float *>(jack_port_get_buffer(self->fPorts[3], nframes));
 
     self->fFilter.setType(static_cast<SfzFilterType>(self->fType));
-    self->fFilter.process(ins, outs, self->fCutoff, self->fReso, nframes);
+    self->fFilter.process(ins, outs, self->fCutoff, self->fReso, self->fPksh, nframes);
 
     return 0;
 }
@@ -194,6 +211,19 @@ void DemoApp::valueChangedResonance(int value)
     fUi.spinResonance->blockSignals(false);
 
     fReso = value;
+}
+
+void DemoApp::valueChangedPkShGain(int value)
+{
+    fUi.dialPkShGain->blockSignals(true);
+    fUi.dialPkShGain->setValue(value);
+    fUi.dialPkShGain->blockSignals(false);
+
+    fUi.spinPkShGain->blockSignals(true);
+    fUi.spinPkShGain->setValue(value);
+    fUi.spinPkShGain->blockSignals(false);
+
+    fPksh = value;
 }
 
 int main(int argc, char *argv[])
