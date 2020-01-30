@@ -27,7 +27,6 @@ struct SfzFilter<NCh>::Impl {
 
     template <class F> static void process(F &filter, const float *const in[NCh], float *const out[NCh], float cutoff, float q, unsigned nframes);
     template <class F> static void processModulated(F &filter, const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, unsigned nframes);
-    void updateParameters();
 };
 
 template <unsigned NCh>
