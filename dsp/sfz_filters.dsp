@@ -82,6 +82,9 @@ sfzLsh = fm.rbjLowShelfSmooth(smoothCoefs,cutoff,pkShGain,Q);
 // the SFZ high-shelf filter
 sfzHsh = fm.rbjHighShelfSmooth(smoothCoefs,cutoff,pkShGain,Q);
 
+// the SFZ peaking EQ filter
+sfzPeq = fm.rbjPeakingEqSmooth(smoothCoefs,cutoff,pkShGain,Q);
+
 //==============================================================================
 // Filters (stereo)
 
@@ -107,6 +110,7 @@ sfz2chBpf2pSv = par(i,2,sfzBpf2pSv);
 sfz2chBrf2pSv = par(i,2,sfzBrf2pSv);
 sfz2chLsh = par(i,2,sfzLsh);
 sfz2chHsh = par(i,2,sfzHsh);
+sfz2chPeq = par(i,2,sfzPeq);
 
 //==============================================================================
 // Filter parameters

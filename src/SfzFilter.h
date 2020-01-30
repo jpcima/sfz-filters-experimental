@@ -92,4 +92,5 @@ enum SfzFilterType : int {
     kSfzFilterBrf2pSv,
     kSfzFilterLsh,
     kSfzFilterHsh,
+    kSfzFilterPeq,
 };

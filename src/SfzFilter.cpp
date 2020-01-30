@@ -36,6 +36,7 @@ struct SfzFilter<NCh>::Impl {
     sfzBrf2pSv<NCh> fDspBrf2pSv;
     sfzLsh<NCh> fDspLsh;
     sfzHsh<NCh> fDspHsh;
+    sfzPeq<NCh> fDspPeq;
 
     template <class F> static void process(F &filter, const float *const in[NCh], float *const out[NCh], float cutoff, float q, float pksh, unsigned nframes);
     template <class F> static void processModulated(F &filter, const float *const in[NCh], float *const out[NCh], const float *cutoff, const float *q, const float *pksh, unsigned nframes);
@@ -77,6 +78,7 @@ void SfzFilter<NCh>::init(double sampleRate)
     P->fDspBrf2pSv.init(sampleRate);
     P->fDspLsh.init(sampleRate);
     P->fDspHsh.init(sampleRate);
+    P->fDspPeq.init(sampleRate);
 }
 
 template <unsigned NCh>
@@ -106,6 +108,7 @@ void SfzFilter<NCh>::clear()
     case kSfzFilterBrf2pSv: P->fDspBrf2pSv.instanceClear(); break;
     case kSfzFilterLsh: P->fDspLsh.instanceClear(); break;
     case kSfzFilterHsh: P->fDspHsh.instanceClear(); break;
+    case kSfzFilterPeq: P->fDspPeq.instanceClear(); break;
     }
 }
 
@@ -155,6 +158,7 @@ void SfzFilter<NCh>::process(const float *const in[NCh], float *const out[NCh], 
     case kSfzFilterBrf2pSv: P->process(P->fDspBrf2pSv, in, out, cutoff, q, pksh, nframes); break;
     case kSfzFilterLsh: P->process(P->fDspLsh, in, out, cutoff, q, pksh, nframes); break;
     case kSfzFilterHsh: P->process(P->fDspHsh, in, out, cutoff, q, pksh, nframes); break;
+    case kSfzFilterPeq: P->process(P->fDspPeq, in, out, cutoff, q, pksh, nframes); break;
     default: assert(false);
     }
 }
@@ -224,6 +228,7 @@ void SfzFilter<NCh>::processModulated(const float *const in[NCh], float *const o
     case kSfzFilterBrf2pSv: P->processModulated(P->fDspBrf2pSv, in, out, cutoff, q, pksh, nframes); break;
     case kSfzFilterLsh: P->processModulated(P->fDspLsh, in, out, cutoff, q, pksh, nframes); break;
     case kSfzFilterHsh: P->processModulated(P->fDspHsh, in, out, cutoff, q, pksh, nframes); break;
+    case kSfzFilterPeq: P->processModulated(P->fDspPeq, in, out, cutoff, q, pksh, nframes); break;
     default: assert(false);
     }
 }

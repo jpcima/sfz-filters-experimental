@@ -30,6 +30,7 @@ struct UI {};
 #include "gen/sfzBrf2pSv.cxx"
 #include "gen/sfzLsh.cxx"
 #include "gen/sfzHsh.cxx"
+#include "gen/sfzPeq.cxx"
 
 #include "gen/sfz2chApf1p.cxx"
 #include "gen/sfz2chBpf1p.cxx"
@@ -53,6 +54,7 @@ struct UI {};
 #include "gen/sfz2chBrf2pSv.cxx"
 #include "gen/sfz2chLsh.cxx"
 #include "gen/sfz2chHsh.cxx"
+#include "gen/sfz2chPeq.cxx"
 
 template <class F> struct sfzFilter : public F {
     void setCutoff(float v) { F::fCutoff = v; }
@@ -100,6 +102,7 @@ template <unsigned NCh> struct sfzBpf2pSv;
 template <unsigned NCh> struct sfzBrf2pSv;
 template <unsigned NCh> struct sfzLsh;
 template <unsigned NCh> struct sfzHsh;
+template <unsigned NCh> struct sfzPeq;
 
 template<> struct sfzLpf1p<1> : public sfzFilterNoQ<faustLpf1p> {};
 template<> struct sfzLpf2p<1> : public sfzFilter<faustLpf2p> {};
@@ -123,6 +126,7 @@ template<> struct sfzBpf2pSv<1> : public sfzFilter<faustBpf2pSv> {};
 template<> struct sfzBrf2pSv<1> : public sfzFilter<faustBrf2pSv> {};
 template<> struct sfzLsh<1> : public sfzFilterEq<faustLsh> {};
 template<> struct sfzHsh<1> : public sfzFilterEq<faustHsh> {};
+template<> struct sfzPeq<1> : public sfzFilterEq<faustPeq> {};
 
 template<> struct sfzLpf1p<2> : public sfzFilterNoQ<faust2chLpf1p> {};
 template<> struct sfzLpf2p<2> : public sfzFilter<faust2chLpf2p> {};
@@ -146,3 +150,4 @@ template<> struct sfzBpf2pSv<2> : public sfzFilter<faust2chBpf2pSv> {};
 template<> struct sfzBrf2pSv<2> : public sfzFilter<faust2chBrf2pSv> {};
 template<> struct sfzLsh<2> : public sfzFilterEq<faust2chLsh> {};
 template<> struct sfzHsh<2> : public sfzFilterEq<faust2chHsh> {};
+template<> struct sfzPeq<2> : public sfzFilterEq<faust2chPeq> {};

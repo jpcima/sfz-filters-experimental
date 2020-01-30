@@ -121,6 +121,7 @@ void DemoApp::initWindow()
     cbTypes->addItem("Brf2pSv", static_cast<int>(kSfzFilterBrf2pSv));
     cbTypes->addItem("Lsh", static_cast<int>(kSfzFilterLsh));
     cbTypes->addItem("Hsh", static_cast<int>(kSfzFilterHsh));
+    cbTypes->addItem("Peq", static_cast<int>(kSfzFilterPeq));
 
     cbTypes->setCurrentIndex(cbTypes->findData(fType));
 
